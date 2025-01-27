@@ -33,11 +33,8 @@ const productSchema=new mongoose.Schema({
         type:Boolean,
         required:true
     },
-    date:{
-        type:Number,
-        required:true
-    }
-})
+    
+},{timestamps:true})
 
 const productModel=mongoose.models.product||mongoose.model('product',productSchema);
 
