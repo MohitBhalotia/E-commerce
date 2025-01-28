@@ -9,7 +9,6 @@ const adminAuth = async (req, res, next) => {
   const token = authHeader.split(" ")[1];
 
   const payload = jwt.verify(token, process.env.JWT_SECRET);
-  console.log(payload);
 
   if (payload.role !== "Admin") {
     throw new UnauthenticatedError(

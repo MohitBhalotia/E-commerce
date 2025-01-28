@@ -20,7 +20,7 @@ productRouter.route("/add-product").post(
   ]),
   addProduct
 );
-productRouter.route("/remove-product").delete(adminAuth, removeProduct);
+productRouter.route("/remove-product/:id").delete(adminAuth, removeProduct);
 productRouter.route("/get-all-products").get(listProducts);
 productRouter.route("/get-single-product").get(singleProduct);
 

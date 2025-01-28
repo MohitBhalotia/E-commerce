@@ -5,7 +5,7 @@ import NotFoundError from "../errors/not-found.js";
 
 // Add product
 const addProduct = async (req, res) => {
-  const { name, description, price, category, subCategory, sizes, bestSeller } =
+  const { name, description, price, category, subCategory, sizes, bestseller } =
     req.body;
   const image1 = req.files.image1 && req.files.image1[0];
   const image2 = req.files.image2 && req.files.image2[0];
@@ -32,7 +32,7 @@ const addProduct = async (req, res) => {
     category,
     subCategory,
     sizes: JSON.parse(sizes),
-    bestSeller: bestSeller === "true" ? true : false,
+    bestseller: bestseller === "true" ? true : false,
     image: imagesUrl,
   };
   await productModel.create(productData);
@@ -47,7 +47,7 @@ const listProducts = async (req, res) => {
 
 // remove Product
 const removeProduct = async (req, res) => {
-  const product = await productModel.findByIdAndDelete(req.body.id);
+  const product = await productModel.findByIdAndDelete(req.params.id);
   if (!product) {
     throw new NotFoundError(`No product with this id ${req.body?.id}`);
   }

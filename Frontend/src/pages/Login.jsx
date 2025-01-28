@@ -1,14 +1,56 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { ShopContext } from "../context/ShopContext";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const Login = () => {
-  const [currentState, setCurrentState] = useState("Sign Up");
+  const [currentState, setCurrentState] = useState("Login");
+  const { token, setToken, navigate, backendUrl } = useContext(ShopContext);
 
-  const onSubmitHandler=async(e)=>{
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const onSubmitHandler = async (e) => {
     e.preventDefault();
-  }
-  
+    try {
+      if (currentState === "Sign Up") {
+        const response = await axios.post(`${backendUrl}/user/register`, {
+          name,
+          email,
+          password,
+        });
+        if (response.status === 201) {
+          toast.success(`Welcome ${response.data.user.name}`);
+          setToken(response.data.token);
+          localStorage.setItem("token", response.data.token);
+        }
+      } else {
+        const response = await axios.post(`${backendUrl}/user/login`, {
+          email,
+          password,
+        });
+        if (response.status === 200) {
+          toast.success(`Welcome ${response.data.user.name}`);
+          setToken(response.data.token);
+          localStorage.setItem("token", response.data.token);
+        }
+      }
+    } catch (error) {
+      toast.error(error.response.data.msg);
+    }
+  };
+
+  useEffect(()=>{
+    if(token){
+      navigate('/')
+    }
+  },[token])
+
   return (
-    <form onSubmit={onSubmitHandler} className="flex flex-col items-center w-[90%] sm:max-w-96 m-auto mt-14 gap-4 text-gray-800">
+    <form
+      onSubmit={onSubmitHandler}
+      className="flex flex-col items-center w-[90%] sm:max-w-96 m-auto mt-14 gap-4 text-gray-800"
+    >
       <div className="inline-flex items-center gap-2 mb-2 mt-10">
         <p className="prata-regular text-3xl">{currentState}</p>
         <hr className="border-none h-[1.5px] w-8 bg-gray-800" />
@@ -17,6 +59,8 @@ const Login = () => {
         ""
       ) : (
         <input
+          value={name}
+          onChange={(e) => setName(e.target.value)}
           type="text"
           className="w-full px-3 py-2 border border-gray-800"
           placeholder="Name"
@@ -24,12 +68,16 @@ const Login = () => {
         />
       )}
       <input
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
         type="email"
         className="w-full px-3 py-2 border border-gray-800"
         placeholder="Email"
         required
       />
       <input
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
         type="password"
         className="w-full px-3 py-2 border border-gray-800"
         placeholder="Password"
