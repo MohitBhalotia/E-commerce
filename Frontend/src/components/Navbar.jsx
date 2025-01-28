@@ -21,7 +21,7 @@ const Navbar = () => {
     setCartItems({});
   };
   return (
-    <div className="flex items-center justify-between py-5 font-medium">
+    <div className="w-full border-b-2  border-gray-300 flex items-center justify-between py-5 font-medium sticky top-0 z-50 bg-white  ">
       <Link to="/">
         <img src={assets.logo} className="w-36" alt="Logo" />
       </Link>
