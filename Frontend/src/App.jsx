@@ -1,5 +1,5 @@
-import React from "react";
-import { Route, Routes } from "react-router-dom";
+import React, { useContext } from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Collection from "./pages/Collection";
 import About from "./pages/About";
@@ -12,10 +12,12 @@ import Orders from "./pages/Orders";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import SearchBar from "./components/SearchBar";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import NotFound from "./pages/NotFound";
+import { ShopContext } from "./context/ShopContext";
 
 const App = () => {
+  const {token} = useContext(ShopContext);
   return (
     <div className="w-full px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">
       <ToastContainer />
@@ -27,7 +29,10 @@ const App = () => {
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/product/:productId" element={<Product />} />
-        <Route path="/cart" element={<Cart />} />
+        <Route
+          path="/cart"
+          element={token === "" ? <Navigate to={"/login"} /> : <Cart />}
+        />
         <Route path="/place-order" element={<PlaceOrder />} />
         <Route path="/login" element={<Login />} />
         <Route path="/orders" element={<Orders />} />

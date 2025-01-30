@@ -8,6 +8,7 @@ import connectCloudinary from "./src/config/cloudinary.js";
 
 import userRouter from "./src/routes/userRoute.js";
 import productRouter from "./src/routes/productRoute.js";
+import cartRouter from "./src/routes/cartRoute.js";
 
 import notFound from "./src/middleware/not-found.js";
 import errorHandler from "./src/middleware/error-handler.js";
@@ -27,6 +28,8 @@ app.use(cors());
 // api endpoints
 app.use("/api/v1/user", userRouter);
 app.use('/api/v1/product',productRouter)
+app.use('/api/v1/cart',cartRouter)
+
 app.use(notFound);
 app.use(errorHandler);
 
